@@ -5,8 +5,8 @@
 File: binaryrepr.py
 Author: David LAMOULLER
 Email: dlamouller@protonmail.com
-Github: https://github.com/yourname
-Description: 
+Github: https://github.com/dlamouller
+Description: binaryrep is a utility to display position of the bits of a number.
 """
 
 from __future__ import unicode_literals
