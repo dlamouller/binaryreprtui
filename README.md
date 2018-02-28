@@ -10,7 +10,7 @@ The output is formatted in GitHub Flavored Markdown GFM (optionally you can indi
 
 ### Installation Guide
 
-> pip install binaryreprtui
+> pip install binaryrepr
 
 ##### python dependencies
 
