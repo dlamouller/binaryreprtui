@@ -13,6 +13,7 @@ from __future__ import unicode_literals
 import sys
 from math import log
 import click
+import prettytable as pt
 
 #option fo click
 click.disable_unicode_literals_warning = True
@@ -26,6 +27,7 @@ class BaseDepiction(object):
 
     def __init__(self, x, type_rep="bin", outformat="basic", short_repr=False, verbosity=False):
         super(BaseDepiction, self).__init__()
+        self.table = pt.PrettyTable()
         try:
             if x.startswith('0x'):
                 self.x = int(x, 16)
@@ -40,16 +42,17 @@ class BaseDepiction(object):
             sys.exit()
         self.power = dict(hex=4, oct=3).get(type_rep, 1)
         self.outformat = outformat
-        self.short_repr = short_repr
-        self.verbosity = verbosity
-        self.delimiter = "|"
-        self.delimiterhead = "--|"
-        if self.verbosity:
-            self.reprpos = "position bits "
-            self.reprbin = "value "
-        else:
-            self.reprpos = ""
-            self.reprbin = ""
+        if self.outformat == "gfm":
+            self.table.junction_char = "|"
+        elif self.outformat == "noline":
+            self.table.border = False
+            self.table.hrules = pt.NONE
+            self.outformat = { "border" : False,
+                          "header" : True,
+                          "junction_char" : "+",
+                          "hrules" : pt.NONE
+                  }
+                        
         self.depth = 7
         for d in filter(lambda e: round(log(self.x, 2) + 0.5) <= e, [8, 16, 32, 64, 128]):
             self.depth = d
@@ -61,63 +64,33 @@ class BaseDepiction(object):
         else:
             self.x = format(self.x, 'b')
 
-        if not self.short_repr:
+        if not short_repr:
             self.x = int((self.depth/self.power - len(self.x) + 1)) * "0" + self.x
         if sys.byteorder == "little":
             nbbits = [i * self.power for i in range(len(self.x) -1, -1, -1)]
         else:
             nbbits = [i * self.power for i in range(len(self.x) -1)]
         self.position = list(map(str, nbbits))
-
+        self.x = list(self.x)
+        if verbosity:
+            self.position.insert(0, "value")
+            self.x.insert(0, x)
+        self.table.field_names = self.position
+        self.table.add_row(self.x)
 
     def __repr__(self):
-        header = ""
-        data   = ""
+        s = self.table.get_string()
+        if self.outformat == "gfm": #don't know how to set for gfm format
+            s = s.split("\n")
+            s = "\n".join(s[1:-1])
+        return s
 
-        if self.verbosity:
-            print("endianness: {0}".format(sys.byteorder))
-        adjustspace = len(self.reprpos) - len(self.reprbin)
-        for s in self.position:
-            header += s + delim(0, self.delimiter)
-        header = self.reprpos + delim(0, self.delimiter) + header[:-1] + "\n"
-        delimheader =""
-        for p in self.position:
-            if int(p) > 9: # when value greater than 1023
-                delimheader += "-" + self.delimiterhead
-                if self.outformat == "center":
-                    delimheader = delimheader.replace("---|", ":-:|")
-                elif self.outformat == "left":
-                    delimheader = delimheader.replace("---|", ":--|")
-                elif self.outformat == "right":
-                    delimheader = delimheader.replace("---|", "--:|")
-            else:
-                delimheader += self.delimiterhead
-        delimheader = "|" + delimheader + "\n"
-        if self.verbosity:
-            if self.outformat=="center":
-                delimheader = "|:-:" + delimheader
-            elif self.outformat=="left":
-                delimheader = "|:--" + delimheader
-            elif self.outformat=="right":
-                delimheader = "|--:" + delimheader
-            else:
-                delimheader = "|---" + delimheader
-
-
-        for p, x in zip(self.position, self.x):
-            if int(p) > 9: 
-                nbspace = 1
-            else:
-                nbspace = 0
-            data += x + delim(nbspace, self.delimiter)
-        data = self.reprbin + delim(adjustspace, self.delimiter) + data[:-1] + "\n"
-        return header + delimheader + data
 
 
 @click.command(context_settings=CONTEXT_SETTINGS, help="representation of a number in binary, hexadecimal or oct according to your system byteorder")
 @click.option("-t", "--type_repr", default="bin", type=click.Choice(['bin', 'hex', 'oct']), help="type of representation of number, binary by default")
-@click.option("-f", "--outformat", default="basic", type=click.Choice(['center', 'left', 'right', 'basic']), help="outpout format representation. basic by default")
-@click.option("-s", "--short", is_flag=True, help="short representation")
+@click.option("-f", "--outformat", default="basic", type=click.Choice(['noline', 'gfm', 'basic']), help="outpout format representation. basic by default")
+@click.option("-s", "--short", count=True, help="short representation")
 @click.option("-v", "--verbose", is_flag=True, help="verbose mode")
 @click.argument("value")
 def binaryrepr(value, type_repr, outformat, short, verbose):

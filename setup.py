@@ -2,14 +2,15 @@ from setuptools import setup
 
 setup(
     name='binaryrepr',
-    version='0.1',
+    version='0.12',
     author='David Lamouller',
     author_email='dlamouller@protonmail.com',
     py_modules=['binaryrepr'],
     install_requires=[
         'Click',
+        'PrettyTable',
     ],
-    description="binaryrep is a utility to display position of the bits for a number.",
+    description="binaryrep utility to display position of the bits for a number.",
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
@@ -24,6 +25,7 @@ setup(
         'Topic :: Utilities'
     ],
     keywords='binary representation', 
+    url='https://github.com/dlamouller/binaryreprtui',
     entry_points='''
         [console_scripts]
         binaryrepr=binaryrepr:binaryrepr
