@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='binaryrepr',
-    version='0.12',
+    version='0.15',
     author='David Lamouller',
     author_email='dlamouller@protonmail.com',
     py_modules=['binaryrepr'],
