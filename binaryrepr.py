@@ -16,7 +16,7 @@ from operator import itemgetter
 import click
 import prettytable as pt
 
-#option fo click
+# option fo click
 click.disable_unicode_literals_warning = True
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
@@ -112,10 +112,10 @@ class BaseDepiction(object):
         elif self.outformat == "noline":
             self.table.border = False
             self.table.hrules = pt.NONE
-            self.outformat = {"border" : False,
-                              "header" : True,
-                              "junction_char" : "+",
-                              "hrules" : pt.NONE}
+            self.outformat = {"border": False,
+                              "header": True,
+                              "junction_char": "+",
+                              "hrules": pt.NONE}
         # self.depth = 7
         for deep in filter(lambda e: round(log(self.x, 2)) < e, [8, 16, 32, 64, 128]):
             self.depth = deep
@@ -128,9 +128,9 @@ class BaseDepiction(object):
             self.x = format(self.x, 'b')
 
         if not short_repr:
-            self.x = int((self.depth/self.power - len(self.x) + 1)) * "0" + self.x
+            self.x = int((self.depth / self.power - len(self.x) + 1)) * "0" + self.x
         if sys.byteorder == "little":
-            nbbits = [i * self.power for i in range(len(self.x) -1, -1, -1)]
+            nbbits = [i * self.power for i in range(len(self.x) - 1, -1, -1)]
         else:
             nbbits = [i * self.power for i in range(len(self.x))]
         self.position = list(map(str, nbbits))
@@ -139,9 +139,9 @@ class BaseDepiction(object):
         ffs = self.depth - nlz - 1
         # self.position.insert(0, "binarygap")
         # self.x.insert(0, binarygap(x[0]))
-        self.position.insert(0, "nlz_u" + str(self.depth) )
+        self.position.insert(0, "nlz_u" + str(self.depth))
         self.x.insert(0, nlz)
-        self.position.insert(0, "ffs_u" + str(self.depth) )
+        self.position.insert(0, "ffs_u" + str(self.depth))
         self.x.insert(0, ffs)
         self.position.insert(0, "input")
         self.x.insert(0, self.base + format(x[0], self.base))
