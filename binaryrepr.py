@@ -39,7 +39,7 @@ def binarygap(u):
 class BaseDepiction(object):
     """BaseDepiction
 
-    >>> BaseDepiction((2, u'd'), True, "bin", "basic", False, True)
+    >>> BaseDepiction((182, u'd'), True, "bin", "basic", False, True)
     +-------+--------+--------+---+---+---+---+---+---+---+---+---+
     | input | ffs_u8 | nlz_u8 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
     +-------+--------+--------+---+---+---+---+---+---+---+---+---+
@@ -116,8 +116,7 @@ class BaseDepiction(object):
                               "header": True,
                               "junction_char": "+",
                               "hrules": pt.NONE}
-        # self.depth = 7
-        for deep in filter(lambda e: round(log(self.x, 2)) < e, [8, 16, 32, 64, 128]):
+        for deep in filter(lambda e: int(log(self.x, 2)) < e, [8, 16, 32, 64, 128]):
             self.depth = deep
             break
         if self.power == 4:
