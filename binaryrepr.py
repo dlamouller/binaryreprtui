@@ -198,8 +198,8 @@ def binaryrepr(value, type_repr, outformat, short):
     display number in binary, hexadecimal or oct in a human readable view
     
     """
-    convert = lambda x: (int(x, 16), 'x') if x.startswith('0x') else ((int(x, 2), 'b')\
-            if x.startswith('0b') else ((int(x, 8), 'o') if x.startswith('0') else (int(x), 'd')))
+    convert = lambda x: (eval(x), 'x') if x.startswith('0x') else ((eval(x), 'b')\
+            if x.startswith('0b') else ((eval(x), 'o') if x.startswith('0') else (eval(x), 'd')))
     values = list(map(convert, value))
     alldecimal = all(y == 'd' for x, y in values)
     maxv = sorted(values, key=itemgetter(0)).pop(-1)
