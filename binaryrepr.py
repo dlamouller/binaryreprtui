@@ -39,6 +39,11 @@ def binarygap(u):
 class BaseDepiction(object):
     """BaseDepiction
 
+    >>> BaseDepiction((0, u'd'), True, "bin", "basic", False, True)
+    +-------+--------+--------+---+---+---+---+---+---+---+---+---+
+    | input | ffs_u8 | nlz_u8 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
+    +-------+--------+--------+---+---+---+---+---+---+---+---+---+
+
     >>> BaseDepiction((182, u'd'), True, "bin", "basic", False, True)
     +-------+--------+--------+---+---+---+---+---+---+---+---+---+
     | input | ffs_u8 | nlz_u8 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
@@ -116,9 +121,12 @@ class BaseDepiction(object):
                               "header": True,
                               "junction_char": "+",
                               "hrules": pt.NONE}
-        for deep in filter(lambda e: int(log(self.x, 2)) < e, [8, 16, 32, 64, 128]):
-            self.depth = deep
-            break
+        if self.x:
+            for deep in filter(lambda e: int(log(self.x, 2)) < e, [8, 16, 32, 64, 128]):
+                self.depth = deep
+                break
+        else:
+            self.depth = 8
         if self.power == 4:
             self.x = format(self.x, 'x')
         elif self.power == 3:
@@ -134,7 +142,7 @@ class BaseDepiction(object):
             nbbits = [i * self.power for i in range(len(self.x))]
         self.position = list(map(str, nbbits))
         self.x = list(self.x)
-        nlz = self.depth - int(log(x[0], 2)) - 1
+        nlz = self.depth - int(log(x[0], 2)) - 1 if x[0] else 8
         ffs = self.depth - nlz - 1
         # self.position.insert(0, "binarygap")
         # self.x.insert(0, binarygap(x[0]))
