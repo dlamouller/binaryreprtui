@@ -45,59 +45,59 @@ class BaseDepiction(object):
     +-------+--------+--------+---+---+---+---+---+---+---+---+---+
 
     >>> BaseDepiction((182, u'd'), True, "bin", "basic", False, True)
-    +-------+--------+--------+---+---+---+---+---+---+---+---+---+
-    | input | ffs_u8 | nlz_u8 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
-    +-------+--------+--------+---+---+---+---+---+---+---+---+---+
+    +-------+--------+--------+---+---+---+---+---+---+---+---+
+    | input | ffs_u7 | nlz_u7 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
+    +-------+--------+--------+---+---+---+---+---+---+---+---+
 
     >>> BaseDepiction((256, u'd'), True, "bin", "basic", False, True)
-    +-------+---------+---------+----+----+----+----+----+----+----+---+---+---+---+---+---+---+---+---+---+
-    | input | ffs_u16 | nlz_u16 | 16 | 15 | 14 | 13 | 12 | 11 | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
-    +-------+---------+---------+----+----+----+----+----+----+----+---+---+---+---+---+---+---+---+---+---+
+    +-------+---------+---------+----+----+----+----+----+----+---+---+---+---+---+---+---+---+---+---+
+    | input | ffs_u15 | nlz_u15 | 15 | 14 | 13 | 12 | 11 | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
+    +-------+---------+---------+----+----+----+----+----+----+---+---+---+---+---+---+---+---+---+---+
 
     >>> BaseDepiction((2, u'd'), True, "bin", "gfm", False, True)
-    | input | ffs_u8 | nlz_u8 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
+    | input | ffs_u7 | nlz_u7 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
 
     >>> BaseDepiction((2, u'd'), True, "bin", "nohrules", False, True)
-    | input | ffs_u8 | nlz_u8 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
+    | input | ffs_u7 | nlz_u7 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
 
     >>> BaseDepiction((32, u'd'), True, "bin", "basic", True, True)
     +-------+--------+--------+---+---+---+---+---+---+
-    | input | ffs_u8 | nlz_u8 | 5 | 4 | 3 | 2 | 1 | 0 |
+    | input | ffs_u7 | nlz_u7 | 5 | 4 | 3 | 2 | 1 | 0 |
     +-------+--------+--------+---+---+---+---+---+---+
 
     >>> BaseDepiction((1, u'x'), False, "bin", "basic", False, True)
-    +-----------+-------+--------+--------+---+---+---+---+---+---+---+---+---+
-    | value dec | input | ffs_u8 | nlz_u8 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
-    +-----------+-------+--------+--------+---+---+---+---+---+---+---+---+---+
+    +-----------+-------+--------+--------+---+---+---+---+---+---+---+---+
+    | value dec | input | ffs_u7 | nlz_u7 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
+    +-----------+-------+--------+--------+---+---+---+---+---+---+---+---+
 
     >>> BaseDepiction((15, u'x'), False, "bin", "basic", True, True)
     +-----------+-------+--------+--------+---+---+---+---+
-    | value dec | input | ffs_u8 | nlz_u8 | 3 | 2 | 1 | 0 |
+    | value dec | input | ffs_u7 | nlz_u7 | 3 | 2 | 1 | 0 |
     +-----------+-------+--------+--------+---+---+---+---+
 
     >>> BaseDepiction((15, u'x'), False, "hex", "basic", False, True)
-    +-----------+-------+--------+--------+---+---+---+
-    | value dec | input | ffs_u8 | nlz_u8 | 8 | 4 | 0 |
-    +-----------+-------+--------+--------+---+---+---+
+    +-----------+-------+--------+--------+---+---+
+    | value dec | input | ffs_u7 | nlz_u7 | 4 | 0 |
+    +-----------+-------+--------+--------+---+---+
 
     >>> BaseDepiction((15, u'b'), False, "bin", "basic", True, True)
     +-----------+-------+--------+--------+---+---+---+---+
-    | value dec | input | ffs_u8 | nlz_u8 | 3 | 2 | 1 | 0 |
+    | value dec | input | ffs_u7 | nlz_u7 | 3 | 2 | 1 | 0 |
     +-----------+-------+--------+--------+---+---+---+---+
 
     >>> BaseDepiction((31, u'b'), False, "hex", "basic", True, True)
     +-----------+-------+--------+--------+---+---+
-    | value dec | input | ffs_u8 | nlz_u8 | 4 | 0 |
+    | value dec | input | ffs_u7 | nlz_u7 | 4 | 0 |
     +-----------+-------+--------+--------+---+---+
 
     >>> BaseDepiction((31, u'b'), False, "oct", "basic", True, True)
     +-----------+-------+--------+--------+---+---+
-    | value dec | input | ffs_u8 | nlz_u8 | 3 | 0 |
+    | value dec | input | ffs_u7 | nlz_u7 | 3 | 0 |
     +-----------+-------+--------+--------+---+---+
 
     >>> BaseDepiction((8, u'd'), True, "oct", "basic", False, True)
     +-------+--------+--------+---+---+---+
-    | input | ffs_u8 | nlz_u8 | 6 | 3 | 0 |
+    | input | ffs_u7 | nlz_u7 | 6 | 3 | 0 |
     +-------+--------+--------+---+---+---+
 
     """
@@ -123,7 +123,7 @@ class BaseDepiction(object):
                               "hrules": pt.NONE}
         if self.x:
             for deep in filter(lambda e: int(log(self.x, 2)) < e, [8, 16, 32, 64, 128]):
-                self.depth = deep
+                self.depth = deep -1
                 break
         else:
             self.depth = 8
@@ -142,8 +142,9 @@ class BaseDepiction(object):
             nbbits = [i * self.power for i in range(len(self.x))]
         self.position = list(map(str, nbbits))
         self.x = list(self.x)
-        nlz = self.depth - int(log(x[0], 2)) - 1 if x[0] else 8
-        ffs = self.depth - nlz - 1
+        # nlz = self.depth - int(log(x[0], 2)) - 1 if x[0] else 8
+        nlz = self.depth - int(log(x[0], 2)) if x[0] else 8
+        ffs = self.depth - nlz
         # self.position.insert(0, "binarygap")
         # self.x.insert(0, binarygap(x[0]))
         self.position.insert(0, "nlz_u" + str(self.depth))
