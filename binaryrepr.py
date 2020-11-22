@@ -9,7 +9,6 @@ Github: https://github.com/dlamouller
 Description: binaryrep is a utility to display position of the bits of a number.
 """
 
-from __future__ import unicode_literals
 import sys
 from math import log
 from operator import itemgetter
@@ -180,6 +179,7 @@ class BaseDepiction(object):
         """add a new row"""
         self.table.add_row(self.x)
 
+
 def convert(x):
     """
     >>> convert('0x10')
@@ -203,6 +203,7 @@ def convert(x):
         return (eval(x), 'o')
     else:
         return (eval(x), 'd')
+
 
 @click.command(context_settings=CONTEXT_SETTINGS,
                help="""representation of a number in binary, hexadecimal or oct according to your
