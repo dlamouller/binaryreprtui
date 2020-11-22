@@ -54,6 +54,9 @@ class BaseDepiction(object):
     | input | ffs_u16 | nlz_u16 | 15 | 14 | 13 | 12 | 11 | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
     +-------+---------+---------+----+----+----+----+----+----+---+---+---+---+---+---+---+---+---+---+
 
+    >>> BaseDepiction((2, u'd'), True, "bin", "noline", False, True)
+    <BLANKLINE>
+
     >>> BaseDepiction((2, u'd'), True, "bin", "gfm", False, True)
     | input | ffs_u8 | nlz_u8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
 
@@ -99,7 +102,6 @@ class BaseDepiction(object):
     +-------+--------+--------+---+---+---+
     | input | ffs_u8 | nlz_u8 | 6 | 3 | 0 |
     +-------+--------+--------+---+---+---+
-
     """
 
     def __init__(self, x, alldecimal, type_rep="bin", outformat="basic", short_repr=False, header=True):
@@ -178,6 +180,29 @@ class BaseDepiction(object):
         """add a new row"""
         self.table.add_row(self.x)
 
+def convert(x):
+    """
+    >>> convert('0x10')
+    (16, 'x')
+    >>> convert('0b10')
+    (2, 'b')
+    >>> convert('0o7')
+    (7, 'o')
+    >>> convert('10')
+    (10, 'd')
+    >>> convert('0b11 & 0b10'), convert('0b11 | 0b10'), convert('0b11 ^ 0b10')
+    ((2, 'b'), (3, 'b'), (1, 'b'))
+    >>> convert('11 & 10'), convert('11 | 10'), convert('11 ^ 10')
+    ((10, 'd'), (11, 'd'), (1, 'd'))
+    """
+    if x.startswith('0x'):
+        return (eval(x), 'x')
+    elif x.startswith('0b'):
+        return (eval(x), 'b')
+    elif x.startswith('0o'):
+        return (eval(x), 'o')
+    else:
+        return (eval(x), 'd')
 
 @click.command(context_settings=CONTEXT_SETTINGS,
                help="""representation of a number in binary, hexadecimal or oct according to your
@@ -196,34 +221,14 @@ def binaryrepr(value, type_repr, outformat, short):
     """
     display number in binary, hexadecimal or oct in a human readable view
     """
-    def convert(x):
-        """
-        >>> convert('0x10')
-        (16, 'x')
-        >>> convert('0b10')
-        (3, 'x')
-        >>> convert('0o7')
-        (7, 'o')
-        >>> convert('10')
-        (9, 'd')
-        """
-        if x.startswith('0x'):
-            return (eval(x), 'x')
-        elif x.startswith('0b'):
-            return (eval(x), 'b')
-        elif x.startswith('0o'):
-            return (eval(x), 'o')
-        else:
-            return (eval(x), 'd')
+    if not value:
+        sys.exit(0)
     values = list(map(convert, value))
     alldecimal = all(y == 'd' for x, y in values)
-    maxv = sorted(values, key=itemgetter(0)).pop(-1)
-    values.remove(maxv)
-    if values:
+    maxv = max(values, key=itemgetter(0))
+    if len(values) > 1:
         short = False
     master = BaseDepiction(maxv, alldecimal, type_repr, outformat, short)
-    master.add_row()
-    values.sort(key=itemgetter(0), reverse=True)
     for val in values:
         base = BaseDepiction(val, alldecimal, type_repr, outformat, short, header=False)
         master + base
