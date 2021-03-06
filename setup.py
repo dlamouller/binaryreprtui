@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='binaryrepr',
-    version='0.16',
+    version='0.17',
     author='David Lamouller',
     author_email='dlamouller@protonmail.com',
     py_modules=['binaryrepr'],
@@ -11,6 +11,8 @@ setup(
         'PrettyTable',
     ],
     description="binaryrep utility to display position of the bits for a number.",
+    long_description='binaryrep is a utility to display position of the bits of a number. Entries can be decimal, hexadecimal, binary or octal.',
+    long_description_content_type='text/plain',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
