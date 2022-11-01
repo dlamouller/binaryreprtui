@@ -111,17 +111,7 @@ class BaseDepiction(object):
         self.outformat = outformat
         self.table.header = header
         self.table.hrules = pt.ALL
-        if self.outformat == "gfm":
-            self.table.junction_char = "|"
-        elif self.outformat == "nohrules":
-            self.table.hrules = pt.NONE
-        elif self.outformat == "noline":
-            self.table.border = False
-            self.table.hrules = pt.NONE
-            self.outformat = {"border": False,
-                              "header": True,
-                              "junction_char": "+",
-                              "hrules": pt.NONE}
+        self._initformat()
         if self.x:
             for deep in filter(lambda e: int(log(self.x, 2)) < e, [8, 16, 32, 64, 128]):
                 self.depth = deep - 1
@@ -157,6 +147,19 @@ class BaseDepiction(object):
             self.position.insert(0, "value dec")
             self.x.insert(0, format(x[0], 'd'))
         self.table.field_names = self.position
+    
+    def _initformat(self):
+        if self.outformat == "gfm":
+            self.table.junction_char = "|"
+        elif self.outformat == "nohrules":
+            self.table.hrules = pt.NONE
+        elif self.outformat == "noline":
+            self.table.border = False
+            self.table.hrules = pt.NONE
+            self.outformat = {"border": False,
+                              "header": True,
+                              "junction_char": "+",
+                              "hrules": pt.NONE}
 
     def __repr__(self):
         sout = self.table.get_string()
@@ -170,7 +173,7 @@ class BaseDepiction(object):
             pad = len(self.x) - len(other.x)
             other.x[2] += (self.depth - other.depth)  # update value of nlz
             while pad > 0:
-                other.x.insert(4, "0")  # first column contains values, 2nd nlz
+                other.x.insert(3, "0")  # first column contains values, 2nd nlz
                 pad -= 1
         self.table.add_row(other.x)
         return self.table.get_string()
@@ -204,6 +207,28 @@ def convert(x):
     else:
         return (eval(x), 'd')
 
+def getTable(value, type_repr, outformat, is_short_repr):
+    """return the table to print
+
+    Args:
+        value (tuple): value to convert
+        type_repr (str): type of representation bin, hex ...
+        outformat (str): type of output format: no line, header only
+        is_short_repr (bool): short format or not
+
+    Returns: BaseDepiction string
+
+    """
+    values = list(map(convert, value))
+    alldecimal = all(y == 'd' for _, y in values)
+    maxv = max(values, key=itemgetter(0))
+    if len(values) > 1:
+        is_short_repr = False
+    master = BaseDepiction(maxv, alldecimal, type_repr, outformat, is_short_repr)
+    for val in values:
+        base = BaseDepiction(val, alldecimal, type_repr, outformat, is_short_repr, header=False)
+        master + base
+    return master
 
 @click.command(context_settings=CONTEXT_SETTINGS,
                help="""representation of a number in binary, hexadecimal or oct according to your
@@ -224,15 +249,7 @@ def binaryrepr(value, type_repr, outformat, short):
     """
     if not value:
         sys.exit(0)
-    values = list(map(convert, value))
-    alldecimal = all(y == 'd' for x, y in values)
-    maxv = max(values, key=itemgetter(0))
-    if len(values) > 1:
-        short = False
-    master = BaseDepiction(maxv, alldecimal, type_repr, outformat, short)
-    for val in values:
-        base = BaseDepiction(val, alldecimal, type_repr, outformat, short, header=False)
-        master + base
+    master = getTable(value,type_repr, outformat, short)
     print(master)
 
 
