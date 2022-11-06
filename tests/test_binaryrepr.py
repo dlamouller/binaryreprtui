@@ -1,6 +1,6 @@
 #bug: input: 255 256. La valeur 255 n'est pas bonne
 import pytest
-from .. import binaryrepr
+import binaryrepr
 
 def test_basic():
     m = binaryrepr.getTable(('1',), 'bin', 'basic', True)
