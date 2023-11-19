@@ -1,4 +1,3 @@
-#bug: input: 255 256. La valeur 255 n'est pas bonne
 import pytest
 import binaryrepr
 

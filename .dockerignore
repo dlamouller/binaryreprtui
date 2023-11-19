@@ -1,0 +1,7 @@
+*.pyc
+*.html
+.git
+.gitignore
+.coverage
+htmlcov
+.pytest_cache

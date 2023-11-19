@@ -253,5 +253,3 @@ def binaryrepr(value, type_repr, outformat, short):
     print(master)
 
 
-if __name__ == "__main__":
-    binaryrepr()
