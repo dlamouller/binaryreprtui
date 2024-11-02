@@ -1,7 +1,7 @@
 # Name image docker
 IMAGE_NAME = tox-binaryrepr
 
-default: build run
+default: build runtox
 
 # target for building image
 build:
@@ -26,9 +26,9 @@ checkstyle:
 	flake8 --extend-ignore E501 --statistics --max-line-length=100 binaryrepr.py
 
 clean:
-	rm -rf htmlcov
-	rm -rf report
-	rm -rf archive
+	rm -rf binaryrepr.egg-info
+	rm -rf build dist
+	rm -rf htmlcov report archive
 	rm -f output.json pytest_html_report.html .coverage
 
 
