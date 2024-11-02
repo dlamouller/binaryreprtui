@@ -6,7 +6,7 @@ on:
       python-version:
         description: 'Python version'
         required: true
-        default: '3.9'
+        default: '3.10'
         type: choice
         options:
         - '3.7'
@@ -14,6 +14,7 @@ on:
         - '3.9'
         - '3.10'
         - '3.11'
+        - '3.12'
 
 jobs:
   test:

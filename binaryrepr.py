@@ -103,7 +103,13 @@ class BaseDepiction(object):
     +-------+--------+--------+---+---+---+
     """
 
-    def __init__(self, x, alldecimal, type_rep="bin", outformat="basic", short_repr=False, header=True):
+    def __init__(self,
+                 x,
+                 alldecimal,
+                 type_rep="bin",
+                 outformat="basic",
+                 short_repr=False,
+                 header=True):
         super(BaseDepiction, self).__init__()
         self.table = pt.PrettyTable()
         self.x, self.base = x
@@ -147,7 +153,7 @@ class BaseDepiction(object):
             self.position.insert(0, "value dec")
             self.x.insert(0, format(x[0], 'd'))
         self.table.field_names = self.position
-    
+
     def _initformat(self):
         if self.outformat == "gfm":
             self.table.junction_char = "|"
@@ -171,9 +177,10 @@ class BaseDepiction(object):
     def __add__(self, other):
         if other.depth != self.depth:
             pad = len(self.x) - len(other.x)
-            other.x[2] += (self.depth - other.depth)  # update value of nlz
+            offset = 1 if other.position[0] == 'value dec' else 0
+            other.x[2 + offset] += (self.depth - other.depth)  # update value of nlz
             while pad > 0:
-                other.x.insert(3, "0")  # first column contains values, 2nd nlz
+                other.x.insert(3 + offset, "0")  # first column contains values, 2nd nlz
                 pad -= 1
         self.table.add_row(other.x)
         return self.table.get_string()
@@ -207,6 +214,7 @@ def convert(x):
     else:
         return (eval(x), 'd')
 
+
 def getTable(value, type_repr, outformat, is_short_repr):
     """return the table to print
 
@@ -230,6 +238,7 @@ def getTable(value, type_repr, outformat, is_short_repr):
         master + base
     return master
 
+
 @click.command(context_settings=CONTEXT_SETTINGS,
                help="""representation of a number in binary, hexadecimal or oct according to your
                system byteorder""")
@@ -249,7 +258,5 @@ def binaryrepr(value, type_repr, outformat, short):
     """
     if not value:
         sys.exit(0)
-    master = getTable(value,type_repr, outformat, short)
+    master = getTable(value, type_repr, outformat, short)
     print(master)
-
-

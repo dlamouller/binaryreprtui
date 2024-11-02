@@ -312,3 +312,21 @@ def test_multi_oct(val, repr, format, short, expected ):
 def test_multi_above8bits(val, repr, format, short, expected ):
     m = binaryrepr.getTable(val, repr, format, short)
     assert str(m) == expected
+
+
+#test with various input: hexa and decimal
+@pytest.mark.parametrize(
+    'val, repr, format, short, expected',
+    [
+        (('0x1000', '126'), 'dec', 'basic', 0, """+-----------+-------+---------+---------+----+----+----+----+----+----+---+---+---+---+---+---+---+---+---+---+
+| value dec | input | ffs_u16 | nlz_u16 | 15 | 14 | 13 | 12 | 11 | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 |
++-----------+-------+---------+---------+----+----+----+----+----+----+---+---+---+---+---+---+---+---+---+---+
+|    4096   | x1000 |    12   |    3    | 0  | 0  | 0  | 1  | 0  | 0  | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
++-----------+-------+---------+---------+----+----+----+----+----+----+---+---+---+---+---+---+---+---+---+---+
+|    126    |  d126 |    6    |    9    | 0  | 0  | 0  | 0  | 0  | 0  | 0 | 0 | 0 | 1 | 1 | 1 | 1 | 1 | 1 | 0 |
++-----------+-------+---------+---------+----+----+----+----+----+----+---+---+---+---+---+---+---+---+---+---+"""),
+    ]
+)
+def test_multi_various(val, repr, format, short, expected ):
+    m = binaryrepr.getTable(val, repr, format, short)
+    assert str(m) == expected
