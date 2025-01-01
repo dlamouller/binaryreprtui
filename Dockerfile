@@ -14,7 +14,7 @@ RUN apt install -y python3.8 python3.8-distutils python3.8-dev
 RUN apt install -y python3.9 python3.9-distutils python3.9-dev 
 RUN apt install -y python3.10 python3.10-distutils python3.10-dev
 RUN apt install -y python3.11 python3.11-distutils python3.11-dev
-RUN apt install -y python3.12 python3.12-distutils python3.12-dev
+RUN apt install -y python3.12 python3-setuptools python3.12-dev
 
 # Download and execute get-pip.py for installing pip et setuptools
 RUN curl https://bootstrap.pypa.io/pip/3.7/get-pip.py -o get-pip.py && \
